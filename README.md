@@ -6,16 +6,18 @@ Just a simple gem which converts nested hash into a struct allowing to access da
 ```
 instead of doing:
 ```
-  users_hash[:users][0].fetch(:name)
+  users_hash[:users][0].fetch(:name) # => John
 ```
 for a hash:
 ```
-  {
+  users_hash = {
     users: [
       { name: 'John' }
     ]
   }
 ```
+
+Gem converts hash key names to snake case and in case of misspelled names is raising NoMethodError
 
 ## Installation
 
@@ -35,6 +37,7 @@ Or install it yourself as:
 
 ## Usage
 
+`HashMangler::Mangler.new.mangle(hash)`
 
 ## Contributing
 
