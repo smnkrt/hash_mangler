@@ -21,6 +21,8 @@ Gem converts hash key names to snake case and in case of misspelled names is rai
 
 ## Installation
 
+For now it's only on Github, but after it's published on rubygems installation would look like this:
+
 Add this line to your application's Gemfile:
 
 ```ruby
