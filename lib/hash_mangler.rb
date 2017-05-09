@@ -1,15 +1,4 @@
-require "hash_mangler/version"
-
-class String
-  def snakecase
-    self.gsub(/::/, '/').
-      gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-      gsub(/([a-z\d])([A-Z])/,'\1_\2').
-      tr("-", "_").
-      downcase
-  end
-end
-
+require 'hash_mangler/version'
 
 module HashMangler
   class SimpleStruct
@@ -18,13 +7,24 @@ module HashMangler
     end
 
     def []=(key, val)
-      key = key.to_s.snakecase.to_sym
+      key = key_to_snake_case(key)
       @hash[key] = val
       define_singleton_method(key) { @hash[key] }
     end
 
     def [](key)
-      @hash[key.to_s.snakecase.to_sym]
+      @hash[key_to_snake_case(key)]
+    end
+
+    private
+
+    def key_to_snake_case(key)
+      key.to_s.gsub(/::/, '/')
+        .gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2')
+        .gsub(/([a-z\d])([A-Z])/,'\1_\2')
+        .tr('-', '_')
+        .downcase
+        .to_sym
     end
   end
 
