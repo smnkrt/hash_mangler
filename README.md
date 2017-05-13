@@ -1,6 +1,6 @@
 # HashMangler
 
-Just a simple gem which converts nested hash into a struct allowing to access data with method calls like:
+A simple gem which converts nested hash into a struct allowing data access with method calls like:
 ```
   mangled_hash.users[0].name # => John
 ```
@@ -17,15 +17,13 @@ for a hash:
   }
 ```
 
-Gem converts hash key names to snake case and in case of misspelled names is raising NoMethodError
+Gem converts hash key names to snake case and in case of misspelled names is raising NoMethodError.
 
 ## Installation
 
-For now it's only on Github, but after it's published on rubygems installation would look like this:
-
 Add this line to your application's Gemfile:
 
-```ruby
+```
 gem 'hash_mangler'
 ```
 
@@ -39,7 +37,26 @@ Or install it yourself as:
 
 ## Usage
 
-`HashMangler::Mangler.new.mangle(hash)`
+For a basic convertion from Hash to a nested object:
+```
+hm = HashMangler::Mangler.new.mangle(hash)
+hm.some_method_name
+```
+
+You can also perform operations on argument hash values by passing a proc to the `initialize` method:
+```
+value_mangler = proc { |o| o.to_s.downcase }  
+hm = HashMangler::Mangler.new(value_mangler: value_mangler).mangle(hash)
+hm.some_method_name
+```
+
+If you want you can use `HashMangler::SimpleStruct` instead of `OpenStruct` when using `JSON.parse(json, object_class: OpenStruct)`. This way a `NoMethodError` will be raised instead of returning `nil` when method name does not comply with
+
+By default method names are in snake case, to leave them the same as input hash keys `snake_case_method_names: false` option needs to be passed into `initialize`:
+```
+hm = HashMangler::Mangler.new(snake_case_method_names: false).mangle(hash)
+hm.someMethodName
+```
 
 ## Contributing
 
