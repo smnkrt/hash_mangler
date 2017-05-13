@@ -31,10 +31,14 @@ module HashMangler
   end
 
   class Mangler
+    def initialize(options = {})
+      @value_mangler = options.fetch(:value_mangler, proc { |o| o })
+    end
+
     def mangle(a)
-      return a unless a.is_a?(Hash) || a.is_a?(Array)
+      return @value_mangler.(a) unless a.is_a?(Hash) || a.is_a?(Array)
       return a.map { |v| mangle(v) } if a.is_a?(Array)
-      r = SimpleStruct.new
+      r = HashMangler::SimpleStruct.new
       a.each { |k, v| r[k] = mangle(v) }
       r
     end
