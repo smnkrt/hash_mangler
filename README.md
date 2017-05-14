@@ -1,4 +1,5 @@
 # HashMangler
+[![Gem Version](https://badge.fury.io/rb/hash_mangler.svg)](https://badge.fury.io/rb/hash_mangler)
 
 A simple gem which converts nested hash into a struct allowing data access with method calls like:
 
