@@ -1,14 +1,19 @@
 # HashMangler
 
 A simple gem which converts nested hash into a struct allowing data access with method calls like:
+
 ```
   mangled_hash.users[0].name # => John
 ```
+
 instead of doing:
+
 ```
   users_hash[:users][0].fetch(:name) # => John
 ```
+
 for a hash:
+
 ```
   users_hash = {
     users: [
@@ -38,25 +43,53 @@ Or install it yourself as:
 ## Usage
 
 For a basic convertion from Hash to a nested object:
+
+
 ```
 hm = HashMangler::Mangler.new.mangle(hash)
 hm.some_method_name
 ```
 
 You can also perform operations on argument hash values by passing a proc to the `initialize` method:
+
 ```
 value_mangler = proc { |o| o.to_s.downcase }  
-hm = HashMangler::Mangler.new(value_mangler: value_mangler).mangle(hash)
+options = { value_mangler: value_mangler }
+hm = HashMangler::Mangler.new(options).mangle(hash)
 hm.some_method_name
 ```
 
-If you want you can use `HashMangler::SimpleStruct` instead of `OpenStruct` when using `JSON.parse(json, object_class: OpenStruct)`. This way a `NoMethodError` will be raised instead of returning `nil` when method name does not comply with
 
-By default method names are in snake case, to leave them the same as input hash keys `snake_case_method_names: false` option needs to be passed into `initialize`:
+By default method names are in snake case, to leave them the same as input hash keys:
+
 ```
-hm = HashMangler::Mangler.new(snake_case_method_names: false).mangle(hash)
+snake_case_method_names: false
+```
+
+option needs to be passed into `initialize` like:
+
+```
+options = { snake_case_method_names: false } 
+hm = HashMangler::Mangler.new(options).mangle(hash)
 hm.someMethodName
 ```
+
+Hash can also be mangled with `OpenStruct` or `Hash` using `struct_class` option:
+
+```
+options = { struct_class: OpenStruct }
+hm = HashMangler::Mangler.new(options).mangle(hash)
+hm.some_method_name
+```
+
+`HashMangler::SimpleStruct` can also be used instead of `OpenStruct` when using:
+
+```
+JSON.parse(json, object_class: OpenStruct)
+```
+
+This way a `NoMethodError` will be raised instead of returning `nil` when method name does not comply with
+
 
 ## Contributing
 
