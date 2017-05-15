@@ -89,7 +89,7 @@ hm.some_method_name
 JSON.parse(json, object_class: OpenStruct)
 ```
 
-This way a `NoMethodError` will be raised instead of returning `nil` when method name does not comply with
+This way a `NoMethodError` will be raised instead of returning `nil` when method name does not comply with hash key value.
 
 
 ## Contributing
